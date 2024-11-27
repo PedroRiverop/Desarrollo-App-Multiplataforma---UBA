@@ -29,6 +29,20 @@ app.get('/', function(req, res, next) {
     res.send({'mensaje': 'Hola DAM'}).status(200);
 });
 
+app.get('/devices', function (req, res) {
+    const query = 'SELECT * FROM Dispositivos';
+
+    // Realizamos la consulta a la base de datos
+    pool.query(query, (error, results) => {
+        if (error) {
+            console.error('Error al obtener los dispositivos:', error);
+            res.status(500).send({ error: 'Error al obtener los dispositivos' });
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });

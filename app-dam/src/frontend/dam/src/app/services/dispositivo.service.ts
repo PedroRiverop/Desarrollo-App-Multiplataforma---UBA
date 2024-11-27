@@ -7,10 +7,27 @@ import { Dispositivo } from '../interfaces/dispositivo';
   providedIn: 'root'
 })
 export class DispositivoService {
+  private apiUrl = 'https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo'; // Ajusta si es necesario
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {}
 
-  getDispositivos () {
-    return firstValueFrom(this._http.get('http://localhost:8000/dispositivo'))
+  // Método para obtener dispositivos
+  getDispositivos(): Promise<Dispositivo[]> {
+    return firstValueFrom(this._http.get<Dispositivo[]>(this.apiUrl));
   }
+  getDispositivoById(id: number): Promise<Dispositivo> {
+    return firstValueFrom(
+      this._http.get<Dispositivo>(`https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/${id}`)
+    );
+  }
+  
+  cambiarEstadoValvula(id: number, apertura: boolean): Promise<void> {
+    return firstValueFrom(
+      this._http.post<void>(
+        `https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/valvula`,
+        { apertura: apertura ? 1 : 0 }
+      )
+    );
+  }
+  
 }

@@ -7,11 +7,72 @@ var pool = require('../../mysql-connector');
 routerDispositivo.get('/', function(req, res) {
     pool.query('Select * from Dispositivos', function(err, result, fields) {
         if (err) {
-            res.send(err).status(400);
-            return;
+            console.error('Error al consultar dispositivos:', err);
+            return res.status(400).send(err); // Manejo de errores mejorado
         }
-        res.send(result);
+        res.status(200).send(result); // Respuesta exitosa con código de estado
     });
 })
 
+routerDispositivo.get('/:id', (req, res) => {
+    const dispositivoId = req.params.id;
+
+    // Consulta para obtener el detalle del dispositivo y su válvula
+    const query = `
+        SELECT d.dispositivoId, d.nombre AS dispositivoNombre, d.ubicacion, 
+               e.electrovalvulaId, e.nombre AS electrovalvulaNombre
+        FROM Dispositivos d
+        INNER JOIN Electrovalvulas e ON d.electrovalvulaId = e.electrovalvulaId
+        WHERE d.dispositivoId = ?`;
+
+    pool.query(query, [dispositivoId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el dispositivo:', err);
+            return res.status(500).json({ error: 'Error al obtener el dispositivo' });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Dispositivo no encontrado' });
+        }
+        res.status(200).json(result[0]);
+    });
+});
+
+routerDispositivo.post('/:id/valvula', (req, res) => {
+    const dispositivoId = req.params.id;
+    const { apertura } = req.body; // apertura: 1 para abrir, 0 para cerrar
+    const fecha = new Date();
+
+    // Consulta para insertar en Log_Riegos
+    const queryLog = `
+        INSERT INTO Log_Riegos (apertura, fecha, electrovalvulaId)
+        SELECT ?, ?, electrovalvulaId
+        FROM Dispositivos
+        WHERE dispositivoId = ?`;
+
+    pool.query(queryLog, [apertura, fecha, dispositivoId], (err, result) => {
+        if (err) {
+            console.error('Error al registrar el riego:', err);
+            return res.status(500).json({ error: 'Error al registrar el riego' });
+        }
+        res.status(200).json({ mensaje: `Válvula ${apertura ? 'abierta' : 'cerrada'} correctamente` });
+    });
+});
+
+routerDispositivo.get('/:id/mediciones', (req, res) => {
+    const dispositivoId = req.params.id;
+
+    const query = `
+        SELECT medicionId, fecha, valor
+        FROM Mediciones
+        WHERE dispositivoId = ?
+        ORDER BY fecha DESC`;
+
+    pool.query(query, [dispositivoId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener las mediciones:', err);
+            return res.status(500).json({ error: 'Error al obtener las mediciones' });
+        }
+        res.status(200).json(result);
+    });
+});
 module.exports = routerDispositivo
