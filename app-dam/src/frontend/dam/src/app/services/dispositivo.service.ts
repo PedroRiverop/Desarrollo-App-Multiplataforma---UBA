@@ -30,4 +30,12 @@ export class DispositivoService {
     );
   }
   
+  getMediciones(id: number): Promise<{ medicionId: number; fecha: string; valor: string }[]> {
+    return firstValueFrom(
+      this._http.get<{ medicionId: number; fecha: string; valor: string }[]>(
+        `https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/${id}/mediciones`
+      )
+    );
+  }
+  
 }

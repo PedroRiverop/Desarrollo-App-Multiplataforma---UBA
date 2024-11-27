@@ -6,6 +6,8 @@ import { Observable, Subscription, fromEvent, interval } from 'rxjs';
 import { DispositivoService } from '../services/dispositivo.service';
 import { ActivatedRoute } from '@angular/router';
 import { Dispositivo } from '../interfaces/dispositivo';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dispositivo',
@@ -26,7 +28,8 @@ export class DispositivoPage implements OnInit{
 
   constructor(
     private route: ActivatedRoute,
-    private dispositivoService: DispositivoService
+    private dispositivoService: DispositivoService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -56,4 +59,8 @@ export class DispositivoPage implements OnInit{
       alert('No se pudo cambiar el estado de la válvula.');
     }
   }
+  verMediciones() {
+    this.router.navigate([`/dispositivo`, this.dispositivoId, 'mediciones']);
+  }
+  
 }
