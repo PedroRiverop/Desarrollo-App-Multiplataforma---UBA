@@ -11,8 +11,48 @@ const routerDispositivo = require('./routes/dispositivo')
 
 var corsOptions = {
     origin: '*',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true // Permitir cookies
 }
+
+//=======[Generador de Mediciones Aleatorias]==========================================//
+const generarMediciones = () => {
+    console.log('Intentando obtener dispositivos para generar mediciones...');
+    const queryDispositivos = 'SELECT dispositivoId FROM Dispositivos';
+    const queryInsertMedicion = `
+        INSERT INTO Mediciones (dispositivoId, fecha, valor)
+        VALUES (?, NOW(), ?)`;
+
+    pool.query(queryDispositivos, (err, dispositivos) => {
+        if (err) {
+            console.error('Error al obtener dispositivos:', err);
+            return; // Evita seguir si hay un problema en la consulta
+        }
+
+        dispositivos.forEach(({ dispositivoId }) => {
+            const valor = (Math.random() * 100).toFixed(2); // Genera un valor aleatorio
+
+            pool.query(queryInsertMedicion, [dispositivoId, valor], (err) => {
+                if (err) {
+                    console.error(`Error al registrar medición para dispositivo ${dispositivoId}:`, err);
+                } else {
+                    console.log(`Medición registrada para dispositivo ${dispositivoId}: ${valor}`);
+                }
+            });
+        });
+    });
+};
+
+
+setTimeout(() => {
+    console.log('Iniciando generación periódica de mediciones...');
+    setInterval(() => {
+        console.log('Generando nuevas mediciones...');
+        generarMediciones();
+    }, 300000); // Ejecutar cada 60 segundos
+}, 10000); // Retraso inicial de 10 segundos
 
 // to parse application/json
 app.use(express.json()); 
@@ -43,8 +83,10 @@ app.get('/devices', function (req, res) {
     });
 });
 
-app.listen(PORT, function(req, res) {
-    console.log("NodeJS API running correctly");
-});
 
-//=======[ End of file ]=======================================================
+//=======[ End of file ]======================================================
+
+//=====================================[]==============================//
+app.listen(PORT, function(req, res) {
+    console.log(`NodeJS API running correctly on port ${PORT}`);
+});

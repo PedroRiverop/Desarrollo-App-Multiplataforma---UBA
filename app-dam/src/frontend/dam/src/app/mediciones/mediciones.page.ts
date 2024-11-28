@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DispositivoService } from '../services/dispositivo.service';
+styleUrls: ['./mediciones.page.scss'];
 import {
   IonContent,
   IonHeader,

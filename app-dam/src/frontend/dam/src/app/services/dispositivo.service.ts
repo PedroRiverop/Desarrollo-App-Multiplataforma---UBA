@@ -7,7 +7,7 @@ import { Dispositivo } from '../interfaces/dispositivo';
   providedIn: 'root'
 })
 export class DispositivoService {
-  private apiUrl = 'https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo'; // Ajusta si es necesario
+  private apiUrl = 'https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo'; // Ajusta si es necesario
 
   constructor(private _http: HttpClient) {}
 
@@ -17,14 +17,14 @@ export class DispositivoService {
   }
   getDispositivoById(id: number): Promise<Dispositivo> {
     return firstValueFrom(
-      this._http.get<Dispositivo>(`https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/${id}`)
+      this._http.get<Dispositivo>(`https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${id}`)
     );
   }
   
   cambiarEstadoValvula(id: number, apertura: boolean): Promise<void> {
     return firstValueFrom(
       this._http.post<void>(
-        `https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/valvula`,
+        `https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/valvula`,
         { apertura: apertura ? 1 : 0 }
       )
     );
@@ -33,7 +33,7 @@ export class DispositivoService {
   getMediciones(id: number): Promise<{ medicionId: number; fecha: string; valor: string }[]> {
     return firstValueFrom(
       this._http.get<{ medicionId: number; fecha: string; valor: string }[]>(
-        `https://glowing-fortnight-6jvqjpg9964hrjp9-8000.app.github.dev/dispositivo/${id}/mediciones`
+        `https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${id}/mediciones`
       )
     );
   }
