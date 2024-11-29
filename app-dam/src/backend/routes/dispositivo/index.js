@@ -75,4 +75,38 @@ routerDispositivo.get('/:id/mediciones', (req, res) => {
         res.status(200).json(result);
     });
 });
+
+routerDispositivo.post('/:id/abrir', (req, res) => {
+    const electrovalvulaId = req.params.id;
+    const query = `
+        INSERT INTO Log_Riegos (electrovalvulaId, apertura, fecha)
+        VALUES (?, 1, NOW())
+    `;
+
+    pool.query(query, [electrovalvulaId], (err, result) => {
+        if (err) {
+            console.error('Error al abrir la válvula:', err);
+            return res.status(500).send({ error: 'No se pudo abrir la válvula' });
+        }
+        res.status(200).send({ message: 'Válvula abierta exitosamente' });
+    });
+});
+
+routerDispositivo.post('/:id/cerrar', (req, res) => {
+    const electrovalvulaId = req.params.id;
+    const query = `
+        INSERT INTO Log_Riegos (electrovalvulaId, apertura, fecha)
+        VALUES (?, 0, NOW())
+    `;
+
+    pool.query(query, [electrovalvulaId], (err, result) => {
+        if (err) {
+            console.error('Error al cerrar la válvula:', err);
+            return res.status(500).send({ error: 'No se pudo cerrar la válvula' });
+        }
+        res.status(200).send({ message: 'Válvula cerrada exitosamente' });
+    });
+});
+
+
 module.exports = routerDispositivo

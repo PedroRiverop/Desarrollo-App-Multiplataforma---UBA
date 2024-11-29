@@ -38,4 +38,18 @@ export class DispositivoService {
     );
   }
   
+  abrirValvula(id: number): Promise<any> {
+    return firstValueFrom(
+      this._http.post(`https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${id}/abrir`, {})
+    );
+  }
+  
+  cerrarValvula(id: number): Promise<any> {
+    return firstValueFrom(
+      this._http.post(`https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${id}/cerrar`, {})
+    );
+  }
+  
+
+
 }

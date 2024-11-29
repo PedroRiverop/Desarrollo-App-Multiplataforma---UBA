@@ -63,4 +63,27 @@ export class DispositivoPage implements OnInit{
     this.router.navigate([`/dispositivo`, this.dispositivoId, 'mediciones']);
   }
   
+  abrirValvula() {
+    this.dispositivoService.abrirValvula(this.dispositivoId)
+      .then(() => {
+        alert('Válvula abierta exitosamente');
+      })
+      .catch((error) => {
+        console.error('Error al abrir la válvula:', error);
+        alert('No se pudo abrir la válvula');
+      });
+  }
+  
+  cerrarValvula() {
+    this.dispositivoService.cerrarValvula(this.dispositivoId)
+      .then(() => {
+        alert('Válvula cerrada exitosamente');
+      })
+      .catch((error) => {
+        console.error('Error al cerrar la válvula:', error);
+        alert('No se pudo cerrar la válvula');
+      });
+  }
+  
+
 }
