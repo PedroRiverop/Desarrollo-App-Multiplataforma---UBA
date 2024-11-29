@@ -5,4 +5,17 @@
   ion-button {
     margin-bottom: 8px;
   }
+  ion-card {
+    margin: 16px;
+    border-radius: 8px;
+    text-align: center;
+  }
   
+  ion-chip {
+    margin-top: 8px;
+  }
+  .ubicacion-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3880ff; /* Cambia el color si deseas */
+  }

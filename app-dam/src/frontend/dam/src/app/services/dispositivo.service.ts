@@ -50,6 +50,16 @@ export class DispositivoService {
     );
   }
   
-
+  getEstadoValvula(id: number): Promise<any> {
+    return firstValueFrom(
+      this._http.get(`https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${id}/estado`)
+    );
+  }
+  getUltimaMedicion(dispositivoId: number) {
+    return firstValueFrom(
+      this._http.get<{ fecha: string; valor: string }>(`https://musical-garbanzo-7g76gx9vvpw3rxj-8000.app.github.dev/dispositivo/${dispositivoId}/ultima-medicion`)
+    );
+  }
+  
 
 }

@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { DispositivoService } from '../services/dispositivo.service';
 import { Dispositivo } from '../interfaces/dispositivo';
 import { Router } from '@angular/router';
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonToolbar, IonHeader, IonTitle } from '@ionic/angular/standalone';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonToolbar, IonHeader, IonTitle, IonItem, IonAvatar, IonIcon, IonLabel, IonButton } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { IonContent } from '@ionic/angular/standalone';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 
 @Component({
   selector: 'app-home',
@@ -21,11 +23,16 @@ import { IonContent } from '@ionic/angular/standalone';
     IonCardTitle,
     IonCardSubtitle,
     IonList,
+    IonItem,
+    IonAvatar,
+    IonIcon,
+    IonLabel,
+    IonButton,
     CommonModule,
-  ],
+  ], schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomePage implements OnInit {
-  dispositivos: Dispositivo[] = []; // Propiedad para almacenar dispositivos
+  dispositivos: any[] = []; // Propiedad para almacenar dispositivos
 
   constructor(
     private dispositivoService: DispositivoService, // Servicio para cargar dispositivos
@@ -44,6 +51,10 @@ export class HomePage implements OnInit {
   // Método para navegar a la página de detalles de un dispositivo
   verDetalle(dispositivoId: number) {
     this.router.navigate([`/dispositivo`, dispositivoId]); // Navega a /dispositivo/:id
+  }
+
+  verMediciones(dispositivoId: number) {
+    this.router.navigate([`/dispositivo`, dispositivoId, 'mediciones']);
   }
 }
 

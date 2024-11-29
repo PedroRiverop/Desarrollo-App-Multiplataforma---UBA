@@ -1,32 +1,44 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>{{ dispositivo?.nombre }}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-card>
+<ion-card *ngIf="dispositivo">
+  <ion-card color="light">
     <ion-card-header>
       <ion-card-title>Ubicación</ion-card-title>
-      <ion-card-subtitle>{{ dispositivo?.ubicacion }}</ion-card-subtitle>
     </ion-card-header>
+    <ion-card-content>
+      <p class="ubicacion-text">{{ dispositivo.ubicacion }}</p>
+    </ion-card-content>
   </ion-card>
+  
 
-  <div class="acciones">
-    <ion-button expand="block" color="success" (click)="cambiarEstadoValvula(true)">
-      Abrir Válvula
-    </ion-button>
-    <ion-button expand="block" color="danger" (click)="cambiarEstadoValvula(false)">
-      Cerrar Válvula
-    </ion-button>
-    <ion-button expand="block" (click)="verMediciones()">
-      Ver Mediciones
-    </ion-button>
-    <ion-button expand="full" color="success" (click)="abrirValvula()">
-      Abrir Válvula
-    </ion-button>
-    <ion-button expand="full" color="danger" (click)="cerrarValvula()">
-      Cerrar Válvula
-    </ion-button>
-  </div>
-</ion-content>
+  <ion-card-content>
+    <!-- Mostrar el estado de la válvula -->
+    <div *ngIf="estadoValvula === null; else contenido">
+      <p>Cargando estado de la válvula...</p>
+    </div>
+
+    <ng-template #contenido>
+      <ion-chip color="{{ estadoValvula ? 'success' : 'danger' }}">
+        <ion-icon slot="start" name="{{ estadoValvula ? 'checkmark-circle' : 'close-circle' }}"></ion-icon>
+        {{ estadoValvula ? 'Abierta' : 'Cerrada' }}
+      </ion-chip>
+    </ng-template>
+
+    <!-- Mostrar última medición -->
+    <div *ngIf="ultimaMedicion; else noMediciones">
+      <p><strong>Última Medición:</strong></p>
+      <p>Fecha: {{ ultimaMedicion.fecha }}</p>
+      <p>Valor: {{ ultimaMedicion.valor }}</p>
+    </div>
+
+    <ng-template #noMediciones>
+      <p>No hay mediciones registradas.</p>
+    </ng-template>
+  </ion-card-content>
+
+  <!-- Botones de interacción -->
+  <ion-button expand="block" color="success" (click)="abrirValvula()">Abrir Válvula</ion-button>
+  <ion-button expand="block" color="danger" (click)="cerrarValvula()">Cerrar Válvula</ion-button>
+  <ion-button expand="block" color="primary" (click)="verMediciones()">
+    Mostrar Mediciones
+  </ion-button>
+</ion-card>
+

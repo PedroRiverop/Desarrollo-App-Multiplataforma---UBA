@@ -108,5 +108,52 @@ routerDispositivo.post('/:id/cerrar', (req, res) => {
     });
 });
 
+routerDispositivo.get('/:id/estado', (req, res) => {
+    const electrovalvulaId = req.params.id;
+    const query = `
+        SELECT apertura
+        FROM Log_Riegos
+        WHERE electrovalvulaId = ?
+        ORDER BY fecha DESC
+        LIMIT 1
+    `;
+
+    pool.query(query, [electrovalvulaId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el estado de la válvula:', err);
+            return res.status(500).send({ error: 'No se pudo obtener el estado' });
+        }
+
+        if (result.length > 0) {
+            res.status(200).send({ estado: result[0].apertura === 1 });
+        } else {
+            res.status(200).send({ estado: false }); // Cerrada por defecto
+        }
+    });
+});
+
+routerDispositivo.get('/:id/ultima-medicion', function (req, res) {
+    const dispositivoId = req.params.id;
+
+    const query = `
+        SELECT fecha, valor
+        FROM Mediciones
+        WHERE dispositivoId = ?
+        ORDER BY fecha DESC
+        LIMIT 1
+    `;
+
+    pool.query(query, [dispositivoId], function (err, result) {
+        if (err) {
+            console.error('Error al obtener la última medición:', err);
+            res.status(500).send({ error: 'Error al obtener la última medición' });
+        } else if (result.length === 0) {
+            res.status(404).send({ error: 'No se encontraron mediciones para este dispositivo' });
+        } else {
+            res.status(200).send(result[0]);
+        }
+    });
+});
+
 
 module.exports = routerDispositivo
