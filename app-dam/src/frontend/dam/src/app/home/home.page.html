@@ -1,28 +1,29 @@
-<ion-content>
-  <ion-header collapse="condense">
-  <ion-toolbar>
+
+<ion-header>
+  <ion-toolbar color="primary">
     <ion-title>Dispositivos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-list>
-  <ion-item *ngFor="let dispositivo of dispositivos">
-    <ion-label>
-      <h2>{{ dispositivo.nombre }}</h2>
-      <p>{{ dispositivo.ubicacion }}</p>
-    </ion-label>
-
-    <!-- Botón para mostrar mediciones -->
-    <ion-button expand="block" color="tertiary" (click)="verMediciones(dispositivo.dispositivoId)">
-      Mostrar Mediciones
-    </ion-button>
-
-    <!-- Botón para ver detalles -->
-    <ion-button fill="outline" slot="end" (click)="verDetalle(dispositivo.dispositivoId)">
-      Ver Detalles
-    </ion-button>
-  </ion-item>
-</ion-list>
-
+<ion-content>
+  <ion-list>
+    <ion-card *ngFor="let dispositivo of dispositivos" (click)="verDetalle(dispositivo.dispositivoId)">
+      <ion-card-header>
+        <ion-card-title>
+        {{ dispositivo.nombre }}
+        </ion-card-title>
+        <ion-card-subtitle>{{ dispositivo.ubicacion }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="botones">
+          <ion-button color="tertiary" fill="outline" (click)="verMediciones(dispositivo.dispositivoId); $event.stopPropagation()">
+            Ver Mediciones
+          </ion-button>
+          <ion-button color="primary" fill="solid" (click)="verDetalle(dispositivo.dispositivoId); $event.stopPropagation()">
+            Detalles del Dispositivo
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
 </ion-content>
-

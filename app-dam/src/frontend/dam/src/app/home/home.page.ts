@@ -6,6 +6,9 @@ import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonList, IonTool
 import { CommonModule } from '@angular/common';
 import { IonContent } from '@ionic/angular/standalone';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { addIcons } from 'ionicons';
+import { leaf, restaurant, flower, home, bed, hardwareChip } from 'ionicons/icons';
+
 
 
 @Component({
@@ -31,6 +34,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     CommonModule,
   ], schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
+
 export class HomePage implements OnInit {
   dispositivos: any[] = []; // Propiedad para almacenar dispositivos
 
@@ -50,11 +54,14 @@ export class HomePage implements OnInit {
 
   // Método para navegar a la página de detalles de un dispositivo
   verDetalle(dispositivoId: number) {
+    console.log(`Ver detalle del dispositivo: ${dispositivoId}`);
     this.router.navigate([`/dispositivo`, dispositivoId]); // Navega a /dispositivo/:id
   }
 
   verMediciones(dispositivoId: number) {
+    console.log(`Ver mediciones del dispositivo: ${dispositivoId}`);
     this.router.navigate([`/dispositivo`, dispositivoId, 'mediciones']);
   }
+  
 }
 

@@ -12,6 +12,12 @@ import {
   IonLabel,
 } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { IonButton } from '@ionic/angular/standalone';
+import { IonButtons } from '@ionic/angular/standalone';
+
+
+
 
 @Component({
   selector: 'app-mediciones',
@@ -26,6 +32,8 @@ import { CommonModule } from '@angular/common';
     IonList,
     IonItem,
     IonLabel,
+    IonButton,
+    IonButtons,
     CommonModule,
   ],
 })
@@ -35,7 +43,8 @@ export class MedicionesPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dispositivoService: DispositivoService
+    private dispositivoService: DispositivoService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -52,4 +61,9 @@ export class MedicionesPage implements OnInit {
       console.error('Error al cargar las mediciones:', error);
     }
   }
+
+  volverAlHome() {
+  this.router.navigate(['/home']);
 }
+}
+

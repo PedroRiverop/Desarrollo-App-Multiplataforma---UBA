@@ -118,4 +118,9 @@ export class DispositivoPage implements OnInit{
     }
   }
 
+
+  volverAlHome() {
+    this.router.navigate(['/home']);
+  }
+  
 }
