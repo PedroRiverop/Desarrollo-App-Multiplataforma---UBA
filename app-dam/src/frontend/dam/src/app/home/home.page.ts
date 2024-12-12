@@ -36,11 +36,11 @@ import { leaf, restaurant, flower, home, bed, hardwareChip } from 'ionicons/icon
 })
 
 export class HomePage implements OnInit {
-  dispositivos: any[] = []; // Propiedad para almacenar dispositivos
+  dispositivos: any[] = []; // Para almacenar dispositivos
 
   constructor(
     private dispositivoService: DispositivoService, // Servicio para cargar dispositivos
-    private router: Router // Router para navegar a los detalles
+    private router: Router 
   ) {}
 
   // Método que se ejecuta al inicializar el componente
@@ -55,7 +55,7 @@ export class HomePage implements OnInit {
   // Método para navegar a la página de detalles de un dispositivo
   verDetalle(dispositivoId: number) {
     console.log(`Ver detalle del dispositivo: ${dispositivoId}`);
-    this.router.navigate([`/dispositivo`, dispositivoId]); // Navega a /dispositivo/:id
+    this.router.navigate([`/dispositivo`, dispositivoId]);
   }
 
   verMediciones(dispositivoId: number) {

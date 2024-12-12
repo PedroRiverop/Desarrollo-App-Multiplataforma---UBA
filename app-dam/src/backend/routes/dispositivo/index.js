@@ -8,7 +8,7 @@ routerDispositivo.get('/', function(req, res) {
     pool.query('Select * from Dispositivos', function(err, result, fields) {
         if (err) {
             console.error('Error al consultar dispositivos:', err);
-            return res.status(400).send(err); // Manejo de errores mejorado
+            return res.status(400).send(err); 
         }
         res.status(200).send(result); // Respuesta exitosa con código de estado
     });
